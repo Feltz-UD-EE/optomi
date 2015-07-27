@@ -1,0 +1,24 @@
+<div class='risk_bubble' style="height: 480px">
+  <div class="row">&nbsp;</div>
+  <div class='row risk_severity_header text-center'>
+    Personalized Risk Score
+  </div>
+  <div class='row text-center'>
+  	<div class='risk_severity_circle'>
+      <% if assessment.risk_calculated <= 33 %>
+        <%= image_tag "risk/green_big_circle.png" %>
+      <% elsif assessment.risk_calculated <= 66 %>
+        <%= image_tag "risk/orange_big_circle.png" %>
+      <% else %>
+        <%= image_tag "risk/red_big_circle.png" %>
+      <% end %>
+    
+      <div class='risk_severity_overlay' id='risk_severity_overlay'><%= assessment.risk_calculated %></div>
+  	</div>
+  </div>
+  <% unless assessment.severity_text.blank? %>
+    <div data-alert class="risk-severity-alert-box text-center">
+      <%= assessment.severity_text %>
+    </div>
+  <% end %>
+</div>

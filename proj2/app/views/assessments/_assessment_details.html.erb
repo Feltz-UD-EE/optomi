@@ -1,0 +1,62 @@
+<div class="large-12 columns risk_bubble">
+			  	<div class="large-4 columns text-center">
+			  	  <div class="risk_bubble">
+			  	  	<div class="row"></br></div>
+			  	    <div class="risk_detail_header">Length of Stay</div>
+			  	    <div>
+			  	  	  <span class="risk_detail_you_number"><%= assessment.alos_raw.round(1) %></span>
+			  	  	  <span class="risk_detail_you_text"> days</span>
+			  	    </div>
+			  	    <div>
+			  	  	  <%= render partial: 'greater_less_equals', locals: {you: assessment.alos_raw.round(1), 
+			  	  		   												  average: assessment.procedure.average_alos.round(1)} %>
+			  	    </div>
+			  	    <div class="risk_detail_average_patient_number">
+			  	      <%= assessment.procedure.average_alos.round(1) %>
+			  	    </div>
+			  	    <div class="risk_detail_average_patient_label">
+			  	  	  Average Patient
+			  	    </div>
+			  	  </div>
+			  	</div>
+			  	<div class="large-4 columns text-center">
+			  	  <div class="risk_bubble">
+			  	  	<div class="row"></br></div>
+			  	    <div class="risk_detail_header">Major Complication</div>
+			  	    <div>
+			  	  	  <span class="risk_detail_you_number"><%= assessment.displayable_majcomp_raw %></span>
+			  	  	  <span class="risk_detail_you_percent">%</span>
+			  	    </div>
+			  	    <div>
+			  	  	  <%= render partial: 'greater_less_equals', locals: {you: (assessment.majcomp_raw * 100).round, 
+			  	  														  average: (assessment.procedure.average_majcomp * 100).round} %>
+			  	    </div>
+			  	    <div class="risk_detail_average_patient_number">
+			  	  	  <%= assessment.procedure.displayable_average_majcomp %>
+			  	    </div>
+			  	    <div class="risk_detail_average_patient_label">
+			  	  	  Average Patient
+			  	    </div>
+			  	  </div>
+			  	</div>
+			  	<div class="large-4 columns text-center">
+			  	  <div class="risk_bubble">
+			  	  	<div class="row"></br></div>
+			  	    <div class="risk_detail_header">30 Day Mortality</div>
+			  	    <div>
+			  	  	  <span class="risk_detail_you_number"><%= assessment.displayable_morbidity_raw %></span>
+			  	  	  <span class="risk_detail_you_percent">%</span>
+			  	    </div>
+			  	    <div>
+			  	  	  <%= render partial: 'greater_less_equals', locals: {you: (assessment.morbidity_raw * 100).round, 
+			  	  														  average: (assessment.procedure.average_morbidity * 100).round} %>
+			  	    </div>
+			  	    <div class="risk_detail_average_patient_number">
+			  	  	  <%= assessment.procedure.displayable_average_morbidity %>
+			  	    </div>
+			  	    <div class="risk_detail_average_patient_label">
+			  	  	  Average Patient
+			  	    </div>
+			  	  </div>
+			  	</div>
+</div>	  

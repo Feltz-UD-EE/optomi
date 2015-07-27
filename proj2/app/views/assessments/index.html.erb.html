@@ -1,0 +1,9 @@
+<!-- name logic abstracted to assessments_helper -->
+<% content_for :title, @title %>
+<% if params[:patient] %>
+  <% patient = Patient.find(params[:patient]) %>
+  <h1>Find Assessment for <%= patient.name %></h1>
+<% else %>
+  <h1><%= @title %></h1>
+<% end %>
+<%= render partial: 'assessment_table', locals: {assessments: @assessments} %>

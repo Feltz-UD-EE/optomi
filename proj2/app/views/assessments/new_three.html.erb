@@ -1,0 +1,39 @@
+<% content_for :title, "Assessment Score" %>
+<row class="text-center risk_page_header"><p><%= @assessment.patient_name %></p></row>
+<row class="text-center risk_page_header"><p><%= @assessment.procedure.name %></p></row>
+
+<div class="row">
+  <div class="large-6 columns">
+      <%= render partial: 'assessment_gage', locals: {assessment: @assessment} %>
+  </div>
+  <div class="large-6 columns">
+    <%= render partial: 'assessment_severity', locals: {assessment: @assessment} %>
+  </div>
+</div>
+<div class="row">
+  <%= render partial: 'assessment_details', locals: {assessment: @assessment} %>
+</div>
+<div class="row">&nbsp;</div>
+
+<%= simple_form_for @assessment, url: {action: "refer"} do |f| %>
+  <%= f.input :id, :as => :hidden, :input_html => { :value => @assessment.id } %> 
+  <div class="row">
+    <div class="large-2 columns">
+      <%= f.button :submit, "Modify Patient", :value => "Modify Patient", class: "secondary" %>
+    </div>
+    <div class="large-2 columns">
+      <%= f.button :submit, "New Patient", :value => "New Patient", class: "tertiary" %>   	
+    </div>
+    <div class="large-6 columns">&nbsp;</div>
+    <div class="large-2 columns">	  
+	  <%= f.button :submit, "Enroll in #{current_brand.name}" %>
+    </div>
+  </div>
+<% end %>
+<div class="row">
+  <div class="large-12 columns">
+  	<h4 class="text-center"><%= @assessment.created_at.in_time_zone('Eastern Time (US & Canada)').strftime('%A, %b %d, %Y at %I:%M %P') %></h4>
+  </div>
+</div>
+<div class="row">&nbsp;</div>
+

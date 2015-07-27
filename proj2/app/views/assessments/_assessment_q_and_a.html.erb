@@ -1,0 +1,22 @@
+
+        <table class="large-12">
+    			<thead>
+    				<tr>
+    				  <th>Question</th>
+    				  <th>Answer</th>
+    				</tr>
+    			</thead>
+    			<tbody>
+    				<tr>
+    				  <td>Patient Age</td>
+    				  <td><%= assessment.patient_age %></td>
+    				</tr>
+              <% assessment.assessment_answers.each do |aa| %>
+                <tr>
+                  <td><%= aa.possible_answer.question.name %></td>
+                  <td><%= aa.possible_answer.value %></td>
+                </tr>
+              <% end %>
+    			</tbody>
+  		  </table>
+		  		  

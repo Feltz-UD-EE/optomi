@@ -1,0 +1,65 @@
+<% content_for :title, "Assessment Summary" %>
+<h1>
+  <% if @assessment.patient_id.nil? %>
+    <%= @assessment.patient_name %>
+  <% else %>
+    <%= @assessment.patient.name %>
+  <% end %>
+</h1>
+<h1 style="margin-top: 0">Assessment Summary</h1>
+<p><strong>Assessment</strong> <%= @assessment.id %></p>
+<p><strong>Procedure:</strong> <%= @assessment.procedure.name %></p>
+<p><strong>Procedure For:</strong> <%= @assessment.patient_id.nil? ? @assessment.patient_name : (link_to @assessment.patient.name, patient_path(@assessment.patient))%></p>
+<p><strong>Date Assessed:</strong> <%= @assessment.created_at.in_time_zone('Eastern Time (US & Canada)').strftime("%A, %b %d, %Y at %l:%M %P") %> by <%= @assessment.admin.user.email %></p>
+
+<p><strong>Referred:</strong> <%= @assessment.referral ? "Yes" : "No" %></p>
+
+<p><strong>Enrollment Status:</strong>
+<% if @assessment.patient_id.nil? %>
+  <% if params[:patient].nil? %>
+    Not Enrolled <%= (admin_has_perms(:cr_patient) ? (link_to "Enroll Now", new_patient_path(:assessment => @assessment.id)) : "") %>
+  <% else %>
+    <% patient = Patient.find(params[:patient]) %>
+    <%= simple_form_for @assessment, url: {action: "update"} do |f| %>
+	  <%= f.input :id, :as => :hidden, :input_html => { :value => @assessment.id } %> 
+	  <%= f.input :patient_id, :as => :hidden, :input_html => { :value => params[:patient] } %> 
+	  <div class="row">
+	    <div class="large-4 columns">
+	      <%= f.button :submit, "Attach to #{patient.name}", class: "small" %>
+	    </div>
+      </div>
+    <% end %>
+  <% end %>
+<% else %>
+  <p><strong>Enrollment Date:</strong> <%= @assessment.patient.registration_date.to_formatted_s(:mmddyyyy) %></p>
+  <p><strong>Scheduled Procedure Date:</strong> <%= @assessment.patient.end_date.nil? ? "Not scheduled" : @assessment.patient.end_date.to_formatted_s(:mmddyyyy) %><p>
+  <% if current_admin %>
+    <%= simple_form_for @assessment, url: {action: "update"} do |f| %>
+  	  <%= f.input :id, :as => :hidden, :input_html => { :value => @assessment.id } %> 
+      <%= f.button :submit, "Detach from patient", class: "small " %>
+    <% end %>
+  <% end %>
+<% end %>
+<hr>
+
+<div class="row">
+  <div class="large-6 columns">
+      <%= render partial: 'assessment_gage', locals: {assessment: @assessment} %>
+  </div>
+  <div class="large-6 columns">
+    <%= render partial: 'assessment_severity', locals: {assessment: @assessment} %>
+  </div>
+</div>
+<div class="row">
+  <%= render partial: 'assessment_details', locals: {assessment: @assessment} %>
+</div>
+<hr>
+
+<div class="row">
+  <div class="large-6 columns">
+    <h4>Question and Answer Details:</h4>
+    <%= render partial: 'assessment_q_and_a', locals: {assessment: @assessment} %>
+  </div>
+</div>
+
+

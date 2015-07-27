@@ -1,0 +1,54 @@
+<% content_for :title, "Assessment Questions" %>
+
+<row class="text-center risk_page_header"><p><%= @assessment.patient_name %></p></row>
+<row class="text-center risk_page_header"><p><%= @assessment.procedure.name %></p></row>
+<h3>Please Answer The Following:</h3>
+</br>
+
+<%= simple_form_for @assessment, url: {action: "new_three"} do |f| %>
+  <!-- hidden form fields for procedure_id and admin_id -->
+  <%= f.input :procedure_id, :as => :hidden, :input_html => { :value => @assessment.procedure_id } %> 
+  <%= f.input :admin_id, :as => :hidden, :input_html => { :value => @assessment.admin_id } %>  
+  <%= f.input :patient_name, :as => :hidden, :input_html => { :value => @assessment.patient_name } %>  
+  <%= f.input :patient_id, :as => :hidden, :input_html => { :value => params[:assessment][:patient_id] } %>
+  
+  <div class="large-4">
+  	<h4>Patient's Age</h4>
+    <%= f.input :patient_age, :label => false, :placeholder => "Enter Age", input_html: { class: 'fat-form-field', value: f.object.patient_age } %>
+  </div>
+
+  <% index = 0 %>
+  <% row_div_started = 0 %>
+  <%= f.simple_fields_for :assessment_answers do |ff| %>
+    <% if index % 3 == 0 %>
+      <% row_div_started = 0 %>
+      <div class='row'>
+    <% end %>
+      <div class="large-4 columns">
+        <h4><%= @questions[index].name %></h4>
+        <div class='radio-question'>
+          <%= ff.association :possible_answer, :collection => @questions[index].possible_answers, :label => false,
+           :label_method => :value, :value_method => :id, as: :radio_buttons, :item_wrapper_class => 'large-12 columns panel' %>
+        </div>
+      </div>
+    <% index += 1 %>
+    <% row_div_started += 1 %>
+    <% if row_div_started == 3 %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% unless row_div_started == 3 %>
+    </div>
+  <% end %>
+
+  <br>
+
+  <div class="row">
+    <div class="large-6 columns">
+      <%= f.button :submit, "Create Assessment" %>
+      <%= f.button :submit, "Back", :value => "Back", class: "secondary" %>
+    </div>
+  </div>
+  
+<% end %>

@@ -1,0 +1,11 @@
+
+<%= hidden_field_tag "assessment_val", assessment.risk_calculated, { :id => "assessment_val" } %>
+
+<div class="risk_bubble" style="height: 480px">
+  <div class="row">
+    <div class="image_bg">
+      <%= image_tag('risk/lowrisk_highrisk_background.png') %>      
+    </div>
+    <div class="risk_gauge" id= "g1"></div> 
+  </div>     
+</div>

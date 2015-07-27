@@ -1,0 +1,30 @@
+<!-- Copyright 2015 Prenovo -->
+
+<table id = 'assessments' class="assessment_table">
+
+<thead>
+  <tr>
+    <th>Date</th>
+    <th>Patient Name / ID</th>
+    <% if !admin_has_perms(:v_my_assessments) %>
+      <th>Surgeon</th>
+    <% end %>
+    <th>Procedure</th>
+    <th>Referral</th>
+  </tr>
+</thead>
+<tbody>
+  <% assessments.each do |assessment| %>
+    <tr>
+      <td><%= link_to assessment.created_at.in_time_zone('Eastern Time (US & Canada)').strftime("%A, %b %d, %Y at %l:%M %P"), assessment_path(assessment, :patient => params[:patient]) %></td>
+      <td><%= link_to assessment.patient_name, assessment_path(assessment, :patient => params[:patient]) %></td>
+      <% if !admin_has_perms(:v_my_assessments) %>
+        <td><%= assessment.admin.user.email %></td>
+      <% end %>
+      <td><%= assessment.procedure.name %></td>
+      <td><%= assessment.referral ? "Yes" : "" %></td>
+    </tr>
+  <% end %>
+</tbody>
+
+</table>

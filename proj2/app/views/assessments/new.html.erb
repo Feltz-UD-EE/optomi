@@ -1,0 +1,28 @@
+<% content_for :title, "Create Risk Assessment" %>
+<h1>Create Risk Assessment</h1>
+<% patient = Patient.find(params[:patient]) if params[:patient] %>
+<%= simple_form_for @assessment, url: {action: "new_two"} do |f| %>
+  <%= f.input :procedure_id, :as => :hidden, :input_html => { :value => f.object.procedure_id } %> 
+  <%= f.input :patient_id, :as => :hidden, :input_html => { :value => params[:patient] } %><br/>
+
+  <div class="row">
+  	<div class="large-6 columns">
+  		<h4>Patient's Name or ID</h4>
+    	<%= f.input :patient_name, :label => false, :placeholder => "Enter Name/ID", input_html: { class: 'fat-form-field', value: f.object.patient_name || (patient.present? ? patient.name : "") } %>
+  	</div>
+  </div>
+  <h3>Please Choose Procedure<%= patient.present? ? " for #{patient.name}" : ""%></h3>
+
+  <div class="row">
+    <div class="large-6 columns">
+      <% @procedure_groups.each do |proc_group| %>
+        <h4><%= proc_group.name %></h4>
+        <%= select_tag "procedure_group", options_for_select(proc_group.procedures_for_org(current_admin.organization).collect { |p| [p.name, p.id] }, f.object.procedure_id), :prompt => "Choose Procedure", :id => "procedure_group", :class => "button secondary dropdown" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="large-2">
+    <%= f.button :submit, "Continue" %>
+  </div>
+<% end %>
